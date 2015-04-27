@@ -6,20 +6,29 @@ import javax.imageio.*;
 import javax.swing.*;
 
 public class UserInterfaceClass {
-	public UserInterfaceClass(final BufferedImage image)
+	public UserInterfaceClass(final BufferedImage image, final BufferedImage destination)
 	{
 		SwingUtilities.invokeLater(new Runnable()
 		{
 			public void run()
 			{
 				JFrame editorFrame = new JFrame("Non-Photorealistic Rendering");
+				editorFrame.setLayout(new BorderLayout());
 				editorFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 				
-				Image img = imageToResize(image);			
+				Image img = imageToResize(image);
+				Image dst = imageToResize(destination);
+				
 				ImageIcon imageIcon = new ImageIcon(img);
+				ImageIcon dstIcon = new ImageIcon(dst);
+				
 				JLabel jlabel = new JLabel();
 				jlabel.setIcon(imageIcon);
-				editorFrame.getContentPane().add(jlabel, BorderLayout.CENTER);
+				
+				JLabel jlabeldst = new JLabel();
+				jlabeldst.setIcon(dstIcon);
+				editorFrame.getContentPane().add(jlabel, BorderLayout.WEST);
+				editorFrame.getContentPane().add(jlabeldst, BorderLayout.EAST);
 				
 				editorFrame.pack();
 				//System.out.println(editorFrame.getSize());
