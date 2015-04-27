@@ -116,7 +116,9 @@ public class npr {
 			} else if (arg.equals("-crystallize")) {
 
 				System.out.println("Crystallizing");
+				new UserInterfaceClass(src);
 				Crystallize(src, dst);
+				new UserInterfaceClass(dst);
 				
 			} else if (arg.equals("-kaleidoscope")) {
 
