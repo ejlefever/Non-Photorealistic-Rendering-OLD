@@ -1,88 +1,282 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.awt.image.*;
-import java.io.*;
 
-import javax.imageio.*;
 import javax.swing.*;
 
 public class UserInterfaceClass {
 	
 	//Initialize Everything
-	BufferedImage newImage = null;
-	int style = 0;
+	private BufferedImage newImage = null;
+	private int style = 0;
+	boolean funny = false;
 	private JLabel jlabel = new JLabel();
 	private JLabel jlabeldst = new JLabel();
-	private JButton crystallize = new JButton("Crystallize");
 	private JFrame editorFrame = new JFrame("Non-Photorealistic Rendering");
 	private JPanel imagePanel = new JPanel();
-	private JPanel bPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
+	private JPanel bPanel = new JPanel(new GridLayout(25, 2));
+	//buttons
+	private JButton brighten = new JButton("Brightness");
+	private JButton contrast = new JButton("Contrast");
+	private JButton saturation = new JButton("Saturation");
+	private JButton blur = new JButton("Blur");
+	private JButton sharpen = new JButton("Sharpen");
+	private JButton edgedetect = new JButton("EdgeDetect");
+	private JButton rdither = new JButton("Random Dither");
+	private JButton odither = new JButton("Ordered Dither");
+	private JButton crystallize = new JButton("Crystallize");
+	private JButton kaleidoscope = new JButton("Kaleidoscope");
+	private JButton rays = new JButton("Rays");
+	private JButton sparkle = new JButton("Sparkle");
+	private JButton chrome = new JButton("Chrome");
+	private JButton fun = new JButton("Mystery");
+	private JButton notfun = new JButton("Reset");
+	private JButton empty = new JButton();
+	//textfield
+	private JTextField brightenValue = new JTextField();
+	private JTextField contrastValue = new JTextField();
+	private JTextField saturationValue = new JTextField();
+	private JTextField blurValue = new JTextField();
+	private JTextField sharpenValue = new JTextField();
+	
 	public UserInterfaceClass(final BufferedImage image, final BufferedImage destination)
 	{
 		SwingUtilities.invokeLater(new Runnable()
 		{
 			public void run()
 			{
-				if(image.getHeight() > image.getWidth())
-					style = 1;
+				//main feats
+				Image img = initializeMainFeatures(image, destination);
+								
+				//fun
+				setButtonFeatures(fun);				
+				fun.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						editorFrame.setVisible(false);
+						editorFrame.dispose();
+						new UserInterfaceClass(image, image);
+					}
+				});
+				
+				//not fun
+				setButtonFeatures(notfun);				
+				notfun.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						editorFrame.setVisible(false);
+						editorFrame.dispose();
+						//run program again
+						npr.main(npr.newargs);
+					}
+				});
+				
+				
+				//brighten
+				JPanel brightenPane = new JPanel(new GridLayout(0, 2));
+				brightenPane.setBackground(Color.white);
+				setButtonFeatures(brighten);
+				brighten.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						float value = Float.parseFloat(brightenValue.getText());
+						setNewImageIcon(npr.Brighten(image, destination, value));
+						updateImage();
+					}
+				});
+				brightenPane.add(brighten);
+				brightenPane.add(brightenValue);
 
-				//frame
-				editorFrame.setLayout(new FlowLayout(FlowLayout.LEFT));
-				editorFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-				editorFrame.getContentPane().setBackground(Color.white);
-				
-				//image resize
-				Image img = imageToResize(image, style);
-				Image dst = imageToResize(destination, style);
-				
-				//Icon
-				ImageIcon imageIcon = new ImageIcon(img);
-				ImageIcon dstIcon = new ImageIcon(dst);
-				
-				//imagePanel
-				imagePanel.setBackground(Color.white);
-				editorFrame.add(imagePanel);
-				
-				//buttonPanel
-				bPanel.setBackground(Color.white);
-				editorFrame.add(bPanel);
-				
-				
-				//label
-				jlabel.setIcon(imageIcon);				
-				jlabeldst.setIcon(dstIcon);
-				
-				if(image.getHeight() > image.getWidth())
+				//contrast
+				JPanel contrastPane = new JPanel(new GridLayout(0, 2));
+				contrastPane.setBackground(Color.white);
+				setButtonFeatures(contrast);
+				contrast.addActionListener(new ActionListener()
 				{
-					imagePanel.add(jlabel, BorderLayout.WEST);
-					imagePanel.add(jlabeldst, BorderLayout.CENTER);
-				}
-				else
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						float value = Float.parseFloat(contrastValue.getText());
+						setNewImageIcon(npr.AdjustContrast(image, destination, value));
+						updateImage();
+					}
+				});
+				contrastPane.add(contrast);
+				contrastPane.add(contrastValue);
+
+				//saturation
+				JPanel saturationPane = new JPanel(new GridLayout(0, 2));
+				saturationPane.setBackground(Color.white);
+				setButtonFeatures(saturation);
+				saturation.addActionListener(new ActionListener()
 				{
-					imagePanel.add(jlabel, BorderLayout.NORTH);
-					imagePanel.add(jlabeldst, BorderLayout.SOUTH);
-				}
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						float value = Float.parseFloat(saturationValue.getText());
+						setNewImageIcon(npr.AdjustSaturation(image, destination, value));
+						updateImage();
+					}
+				});
+				saturationPane.add(saturation);
+				saturationPane.add(saturationValue);
+
+				//blur
+				JPanel blurPane = new JPanel(new GridLayout(0, 2));
+				blurPane.setBackground(Color.white);
+				setButtonFeatures(blur);
+				blur.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						float value = Float.parseFloat(blurValue.getText());
+						setNewImageIcon(npr.Blur(image, destination, value));
+						updateImage();
+					}
+				});
+				blurPane.add(blur);
+				blurPane.add(blurValue);
+
+				//sharpen
+				JPanel sharpenPane = new JPanel(new GridLayout(0, 2));
+				sharpenPane.setBackground(Color.white);
+				setButtonFeatures(sharpen);
+				sharpen.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						float value = Float.parseFloat(sharpenValue.getText());
+						setNewImageIcon(npr.Sharpen(image, destination, value));
+						updateImage();
+					}
+				});
+				sharpenPane.add(sharpen);
+				sharpenPane.add(sharpenValue);
+
+				//edgedetect
+				setButtonFeatures(edgedetect);				
+				edgedetect.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						setNewImageIcon(npr.EdgeDetect(image, destination));
+						updateImage();
+					}
+				});
+
+				//rdither
+				setButtonFeatures(rdither);				
+				rdither.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						setNewImageIcon(npr.RandomDither(image, destination));
+						updateImage();
+					}
+				});
+
+				//odither
+				setButtonFeatures(odither);				
+				odither.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						setNewImageIcon(npr.RandomDither(image, destination));
+						updateImage();
+					}
+				});
 				
-				//set buttons
-				crystallize.setBackground(Color.white);
-				crystallize.setFocusPainted(false);
+				//crystallize
+				setButtonFeatures(crystallize);				
 				crystallize.addActionListener(new ActionListener()
 				{
 					@Override
 					public void actionPerformed(ActionEvent e)
 					{
-						// TODO Auto-generated method stub
-						//new UserInterfaceClass(image, npr.Crystallize(image, destination));
 						setNewImageIcon(npr.Crystallize(image, destination));
-						jlabeldst.setIcon(getImageIcon());
-						jlabeldst.updateUI();
+						updateImage();
 					}
 				});
 				
-				//add buttons to panel
-				bPanel.add(crystallize);	
+				//kaleidoscope
+				setButtonFeatures(kaleidoscope);
+				kaleidoscope.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						setNewImageIcon(npr.Kaleidoscope(image, destination));
+						updateImage();
+					}
+				});
+
+				//rays
+				setButtonFeatures(rays);
+				rays.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						setNewImageIcon(npr.Rays(image, destination));
+						updateImage();
+					}
+				});
+				
+				//sparkle
+				setButtonFeatures(sparkle);
+				sparkle.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						setNewImageIcon(npr.Sparkle(image, destination));
+						updateImage();
+					}
+				});
+				
+				//chrome
+				setButtonFeatures(chrome);
+				chrome.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						setNewImageIcon(npr.Chrome(image, destination));
+						updateImage();
+					}
+				});
+
+				setButtonFeatures(empty);
+				empty.setBorderPainted(false);
+				//add buttons to button panel
+				bPanel.add(brightenPane);
+				bPanel.add(contrastPane);
+				bPanel.add(saturationPane);
+				bPanel.add(blurPane);
+				bPanel.add(sharpenPane);
+				bPanel.add(rdither);
+				bPanel.add(odither);
+				bPanel.add(crystallize);
+				bPanel.add(kaleidoscope);
+				bPanel.add(rays);
+				bPanel.add(sparkle);
+				bPanel.add(chrome);
+				bPanel.add(fun);
+				bPanel.add(empty);
+				bPanel.add(notfun);
 
 				//bPanel size after adding everything
 				double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -96,6 +290,65 @@ public class UserInterfaceClass {
 			}			
 		});
 		
+	}
+	
+	public void updateImage()
+	{
+		jlabeldst.setIcon(getImageIcon());
+		jlabeldst.updateUI();
+	}
+	
+	public Image initializeMainFeatures(BufferedImage image, BufferedImage destination)
+	{		
+		if(image.getHeight() > image.getWidth())
+			style = 1;
+		
+		//frame
+		editorFrame.setLayout(new FlowLayout(FlowLayout.LEFT));
+		editorFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		editorFrame.getContentPane().setBackground(Color.white);
+		
+		//image resize
+		Image img = imageToResize(image, style);
+		Image dst = imageToResize(destination, style);
+		
+		//Icon
+		ImageIcon imageIcon;
+		ImageIcon dstIcon;
+
+		imageIcon = new ImageIcon(img);
+		dstIcon = new ImageIcon(dst);
+		
+		//imagePanel
+		imagePanel.setBackground(Color.white);
+		editorFrame.add(imagePanel);
+		
+		//buttonPanel
+		bPanel.setBackground(Color.white);
+		editorFrame.add(bPanel);
+		
+		
+		//label
+		jlabel.setIcon(imageIcon);				
+		jlabeldst.setIcon(dstIcon);
+		
+		if(image.getHeight() > image.getWidth())
+		{
+			imagePanel.add(jlabel, BorderLayout.WEST);
+			imagePanel.add(jlabeldst, BorderLayout.CENTER);
+		}
+		else
+		{
+			imagePanel.add(jlabel, BorderLayout.NORTH);
+			imagePanel.add(jlabeldst, BorderLayout.SOUTH);
+		}
+		
+		return img;
+	}
+
+	public void setButtonFeatures(JButton b){
+		b.setBackground(Color.white);
+		b.setFocusPainted(false);
 	}
 	
 	public ImageIcon getImageIcon()

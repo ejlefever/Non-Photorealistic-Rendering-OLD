@@ -9,6 +9,7 @@ import java.io.*;
 import java.util.*;
 
 public class npr {
+	public static String[] newargs;
 
 	public static void printUsage() {
 		System.out.println("Usage: java imProcess -input <filename> [options]");
@@ -34,8 +35,9 @@ public class npr {
 
 		String arg;
 		String outputfilename = "output.png";		// default output filename
+		newargs = args;
 		
-		if (args.length < 2) {
+		if (args.length < 1) {
 			printUsage();
 		}
 		
@@ -116,10 +118,7 @@ public class npr {
 			} else if (arg.equals("-crystallize")) {
 
 				System.out.println("Crystallizing");
-				//source
-				//new UserInterfaceClass(src);
 				Crystallize(src, dst);
-				//destination
 				
 			} else if (arg.equals("-kaleidoscope")) {
 
@@ -144,7 +143,6 @@ public class npr {
 			} else {
 				printUsage();
 			}
-			// swap src and dst to prepare for the next operation
 			new UserInterfaceClass(src, dst);
 			tmp = src; src = dst; dst = tmp;
 		}
@@ -162,7 +160,7 @@ public class npr {
 	// Change the brightness of an image
 	// brightness is a scaling factor 
 	// Use this function as an example. There is nothing you need to change here
-	public static void Brighten(BufferedImage src, BufferedImage dst, float brightness) {
+	public static BufferedImage Brighten(BufferedImage src, BufferedImage dst, float brightness) {
 
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -194,13 +192,14 @@ public class npr {
 
 		// write pixel values to the destination image
 		dst.setRGB(0, 0, width, height, pixels, 0, width);
+		return dst;
 
 	}
 
 	// change the contrast of an image
 	// contrast = 0 gives a medium gray (0.5, 0.5, 0.5) image
 	// constrat = 1 gives the original image
-	public static void AdjustContrast(BufferedImage src, BufferedImage dst, float contrast) {
+	public static BufferedImage AdjustContrast(BufferedImage src, BufferedImage dst, float contrast) {
 		
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -220,12 +219,13 @@ public class npr {
 			pixels[i] = new Color(r, g, b, a).getRGB();
 		}
 		dst.setRGB(0, 0, width, height, pixels, 0, width);
+		return dst;
 	}
 
 	// change the saturation of an image
 	// saturation = 0 gives a gray scale version of the image
 	// saturation = 1 gives the original image
-	public static void AdjustSaturation(BufferedImage src, BufferedImage dst, float saturation) {
+	public static BufferedImage AdjustSaturation(BufferedImage src, BufferedImage dst, float saturation) {
 
 		//output[p] = input[p]*t + L*(1-t);
 		float L;
@@ -249,44 +249,46 @@ public class npr {
 			pixels[i] = new Color(r, g, b, a).getRGB();
 		}
 		dst.setRGB(0, 0, width, height, pixels, 0, width);
+		return dst;
 	}
 		
 
 	// blur an image
 	// use the GaussianFilter from jhlabs to perform Gaussian blur
 	// This function is a given, and there is nothing you need to change here
-	public static void Blur(BufferedImage src, BufferedImage dst, float radius) {
-
+	public static BufferedImage Blur(BufferedImage src, BufferedImage dst, float radius) {
 		GaussianFilter filter = new GaussianFilter();
 		filter.setRadius(radius);
 		filter.filter(src, dst);
+		return dst;
 	}
 
 	// sharpen an image
 	// sharpness sets the amount of sharpening
 	// use the ConvolveFilter from jhlabs and the sharpening matrix we covered in class to perform this operation
-	public static void Sharpen(BufferedImage src, BufferedImage dst, float sharpness) {
-
+	public static BufferedImage Sharpen(BufferedImage src, BufferedImage dst, float sharpness) {
 		float[] sharpenMatrix = {0, -sharpness, 0, - sharpness, 1+(4*sharpness), -sharpness, 0, - sharpness, 0};
 		ConvolveFilter filter = new ConvolveFilter(3, 3, sharpenMatrix);
 		filter.filter(src, dst);
+		return dst;
 		
 	}
 
 	// detect edge features of an image
 	// use the EdgeFilter from jhlabs
 	// This function is a given, and there is nothing you need to change here
-	public static void EdgeDetect(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage EdgeDetect(BufferedImage src, BufferedImage dst) {
 
 		EdgeFilter filter = new EdgeFilter();
 		filter.filter(src, dst);
+		return dst;
 	}
 
 	// random dithering
 	// compare each image pixel against a random threshold to quantize it to 0 or 1
 	// ignore the color, and just use the luminance of a pixel to do the dithering
 	// your output should be a binary (black-white) image
-	public static void RandomDither(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage RandomDither(BufferedImage src, BufferedImage dst) {
 		
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -305,7 +307,8 @@ public class npr {
 					dst.setRGB(i, j, 0);
 				}
 			}		
-		} 
+		}
+		return dst; 
 		
 	}
 
@@ -314,7 +317,7 @@ public class npr {
 	// in this case, the pseudo random number is given by a 4x4 Bayers matrix
 	// ignore the color, and just use the luminance of a pixel to do the dithering
 	// your output should be a binary (black-white) image
-	public static void OrderedDither(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage OrderedDither(BufferedImage src, BufferedImage dst) {
 		
 		final float[][] Bayers = {{15/16.f,  7/16.f,  13/16.f,   5/16.f},
 								  {3/16.f,  11/16.f,   1/16.f,   9/16.f},
@@ -337,43 +340,44 @@ public class npr {
 					dst.setRGB(i, j, 0);
 				}
 			}		
-		} 		
+		}
+		return dst; 		
 
 	}
 	
 	public static BufferedImage Crystallize(BufferedImage src, BufferedImage dst) {
-		
 		CrystallizeFilter filter = new CrystallizeFilter();
 		filter.filter(src, dst);
 		return dst;
 	}
-	
-	
-	public static void Kaleidoscope(BufferedImage src, BufferedImage dst) {
+
+	public static BufferedImage Kaleidoscope(BufferedImage src, BufferedImage dst) {
 		
 		KaleidoscopeFilter filter = new KaleidoscopeFilter();
 		filter.filter(src, dst);
+		return dst;
 		
 	}
 	
-	public static void Rays(BufferedImage src, BufferedImage dst) {
-		
+	public static BufferedImage Rays(BufferedImage src, BufferedImage dst) {
 		RaysFilter filter = new RaysFilter();
 		filter.filter(src, dst);
-		
+		return dst;
 	}
 	
-	public static void Sparkle(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage Sparkle(BufferedImage src, BufferedImage dst) {
 		
 		SparkleFilter filter = new SparkleFilter();
 		filter.filter(src, dst);
+		return dst;
 		
 	}
 	
-	public static void Chrome(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage Chrome(BufferedImage src, BufferedImage dst) {
 		
 		ChromeFilter filter = new ChromeFilter();
 		filter.filter(src, dst);
+		return dst;
 		
 	}
 	
