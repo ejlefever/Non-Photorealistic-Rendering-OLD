@@ -33,6 +33,8 @@ public class UserInterfaceClass {
 	private JButton chrome = new JButton("Chrome");
 	private JButton fun = new JButton("Mystery");
 	private JButton notfun = new JButton("Reset");
+	private JButton goback = new JButton("Go back");
+	private JButton save = new JButton("Save");
 	private JButton empty = new JButton();
 	//textfield
 	private JTextField brightenValue = new JTextField();
@@ -259,8 +261,21 @@ public class UserInterfaceClass {
 					}
 				});
 
+				setButtonFeatures(save);
+				save.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						npr.saveToDisk(newImage);
+					}
+				});
+
+				//non image processes
 				setButtonFeatures(empty);
 				empty.setBorderPainted(false);
+				setButtonFeatures(goback);
+				
 				//add buttons to button panel
 				bPanel.add(brightenPane);
 				bPanel.add(contrastPane);
@@ -276,7 +291,10 @@ public class UserInterfaceClass {
 				bPanel.add(chrome);
 				bPanel.add(fun);
 				bPanel.add(empty);
+				bPanel.add(goback);
 				bPanel.add(notfun);
+				bPanel.add(save);
+				
 
 				//bPanel size after adding everything
 				double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();

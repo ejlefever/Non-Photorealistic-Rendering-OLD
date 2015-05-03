@@ -34,7 +34,7 @@ public class npr {
 		int width, height;			// image width, height
 
 		String arg;
-		String outputfilename = "output.png";		// default output filename
+//		String outputfilename = "output.png";		// default output filename
 		newargs = args;
 		
 		if (args.length < 1) {
@@ -42,23 +42,28 @@ public class npr {
 		}
 		
 		// parse command line options, and call approrpiate member functions
-		while (i < args.length && args[i].startsWith("-")) {
-			arg = args[i++];
+		//while (i <= args.length) {
+			//arg = args[i++];
 
-			if (arg.equals("-input")) {
+			//if (arg.equals("-input")) {
 
-				String inputfile = args[i++];
-				try {
+				String inputfile = args[++i];
+				try 
+				{
 					src = ImageIO.read(new File(inputfile));
-				} catch (IOException e) {
+				} 
+				catch (IOException e) 
+				{
 					System.out.print(e.toString());
 				}
 				width = src.getWidth();
 				height = src.getHeight();
 				dst = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-				continue;
-
-			} else if (arg.equals("-output")) {
+				//continue;
+			
+			//}
+			/*
+			else if (arg.equals("-output")) {
 
 				outputfilename = args[i++];
 				System.out.println("Output file: " + outputfilename);
@@ -143,17 +148,24 @@ public class npr {
 			} else {
 				printUsage();
 			}
+			*/
 			new UserInterfaceClass(src, dst);
 			tmp = src; src = dst; dst = tmp;
-		}
+		//}
 		if (i != args.length) {
 			System.out.println("there are unused arguments");
 		}
+	}
+	
+	public static void saveToDisk(BufferedImage src)
+	{
 		// write the output image to disk file
-		File outfile = new File(outputfilename);
-		try {
+		File outfile = new File("output.png");
+		try 
+		{
 			ImageIO.write(src, "png", outfile);
-		} catch(IOException e) {
+		} 
+		catch(IOException e) {
 		}
 	}
 
