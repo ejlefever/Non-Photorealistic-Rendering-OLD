@@ -121,10 +121,10 @@ public class npr {
 				System.out.println("Generating chrome");
 				Chrome(src, dst);
 			
-			} else if (arg.equals("-emboss")) {
+			} else if (arg.equals("-abstractImpressionist")) {
 
-				System.out.println("Emboss");
-				Emboss(src, dst);
+				System.out.println("Turning into Abstract Impressionism");
+				abstractImpressionist(src, dst);
 			
 			} else if (arg.equals("-motion")) {
 
@@ -350,7 +350,7 @@ public class npr {
 		
 	}
 	
-	public static void Emboss(BufferedImage src, BufferedImage dst) {
+	public static void abstractImpressionist(BufferedImage src, BufferedImage dst) {
 		
 		final int[][] emboss = {
 					{-1,  -1,  -1,  -1,  0},
@@ -361,8 +361,9 @@ public class npr {
 				};
 		int width = src.getWidth();
 		int height = src.getHeight();
-	
-	
+		BufferedImage tmp = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage tmp2 = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
 		int[] pixels = new int[width*height];
 		src.getRGB(0, 0, width, height, pixels, 0, width);
 		
@@ -404,10 +405,13 @@ public class npr {
 	    
 	    for (int i = 0; i < result.length; i++) {
 	    	for (int j = 0; j < result[0].length; j++) {
-	    		dst.setRGB(i, j, result[i][j]);
+	    		tmp.setRGB(i, j, result[i][j]);
 	    	}
 	    }
 				
+	    oilPaint(tmp, tmp2);
+	    AdjustSaturation(tmp2, dst, 2.0f);
+	    
 	}	
 		
 	
@@ -527,7 +531,7 @@ public class npr {
 
     }
 	
-	public static void something(BufferedImage src, BufferedImage dst) {
+	/*public static void something(BufferedImage src, BufferedImage dst) {
 		
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -548,7 +552,7 @@ public class npr {
 				counter++;
 			}
 		}*/
-		for (int i = 0; i < rows; i++) {
+		/*for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				dst.setRGB(i, j, 0); //all white
 			}
@@ -565,7 +569,7 @@ public class npr {
 					}
 				}
 			}
-		}
+		}*/
 		
 		/*
 		int width = src.getWidth();
@@ -574,7 +578,7 @@ public class npr {
 		Crystallize(src, tmp);
 		oilPaint(tmp, dst);*/
 		
-	}
+	//}
 	
 	public static void oilPaint(BufferedImage src, BufferedImage dst) {
 		
@@ -675,5 +679,3 @@ public class npr {
 	}
 	
 }
-
-	
