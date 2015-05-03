@@ -120,7 +120,6 @@ public class npr {
 				//new UserInterfaceClass(src);
 				Crystallize(src, dst);
 				//destination
-				new UserInterfaceClass(src, dst);
 				
 			} else if (arg.equals("-kaleidoscope")) {
 
@@ -146,6 +145,7 @@ public class npr {
 				printUsage();
 			}
 			// swap src and dst to prepare for the next operation
+			new UserInterfaceClass(src, dst);
 			tmp = src; src = dst; dst = tmp;
 		}
 		if (i != args.length) {
@@ -341,11 +341,11 @@ public class npr {
 
 	}
 	
-	public static void Crystallize(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage Crystallize(BufferedImage src, BufferedImage dst) {
 		
 		CrystallizeFilter filter = new CrystallizeFilter();
 		filter.filter(src, dst);
-		
+		return dst;
 	}
 	
 	
