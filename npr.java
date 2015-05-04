@@ -12,11 +12,11 @@ public class npr {
 	
 	public static String[] newargs;
 
-	public static void printUsage() {
+	/*public static void printUsage() {
 		System.out.println("Usage: java imProcess -input <filename> [options]");
 		System.out.println("-output <filename>");
 		System.exit(1);
-	}
+	}*/
 
 	public static void main(String[] args) {
 		int i = 0;
@@ -28,9 +28,9 @@ public class npr {
 		String outputfilename = "output.png";	
 		newargs = args;
 		
-		if (args.length < 2) {
+		/*if (args.length < 2) {
 			printUsage();
-		}
+		}*/
 		
 		while (i < args.length && args[i].startsWith("-")) {
 			arg = args[i++];
@@ -54,7 +54,7 @@ public class npr {
 				System.out.println("Output file: " + outputfilename);
 				continue;
 
-			} else if (arg.equals("-brightness")) {
+			} /*else if (arg.equals("-brightness")) {
 
 				float brightness = Float.parseFloat(args[i++]);
 				System.out.println("Set brightness: " + brightness);
@@ -141,14 +141,14 @@ public class npr {
 				System.out.println("Modernizing");
 				Modern(src, dst); 
 			
-			} else if (arg.equals("-something")) {
+			} /*else if (arg.equals("-something")) {
 
 				System.out.println("Doing something");
 				something(src, dst); 
 			
 			} else {
 				printUsage();
-			} 
+			} */
 			//new UserInterfaceClass(src, dst);
 			tmp = src; src = dst; dst = tmp;
 		}
