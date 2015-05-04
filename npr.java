@@ -28,16 +28,13 @@ public class npr {
 		String outputfilename = "output.png";	
 		newargs = args;
 		
-		/*if (args.length < 2) {
-			printUsage();
-		}*/
-		
-		while (i < args.length && args[i].startsWith("-")) {
+		while (i < args.length) {
 			arg = args[i++];
 
 			if (arg.equals("-input")) {
 
 				String inputfile = args[i++];
+				System.out.println(inputfile);
 				try {
 					src = ImageIO.read(new File(inputfile));
 				} catch (IOException e) {
@@ -46,16 +43,16 @@ public class npr {
 				width = src.getWidth();
 				height = src.getHeight();
 				dst = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-				continue;
+				//continue;
+			}
+				/*
+				} else if (arg.equals("-output")) {
 
-			} else if (arg.equals("-output")) {
-
-				outputfilename = args[i++];
+				outputfilename = args[++i];
 				System.out.println("Output file: " + outputfilename);
 				continue;
 
-			} /*else if (arg.equals("-brightness")) {
-
+			} else if (arg.equals("-brightness")) {
 				float brightness = Float.parseFloat(args[i++]);
 				System.out.println("Set brightness: " + brightness);
 				Brighten(src, dst, brightness);
@@ -149,9 +146,9 @@ public class npr {
 			} else {
 				printUsage();
 			} */
-			//new UserInterfaceClass(src, dst);
+			new UserInterfaceClass(src, dst);
 			tmp = src; src = dst; dst = tmp;
-		}
+		//}
 		if (i != args.length) {
 			System.out.println("there are unused arguments");
 		}
@@ -161,6 +158,7 @@ public class npr {
 		try {
 			ImageIO.write(src, "png", outfile);
 		} catch(IOException e) {
+		}
 		}
 	}
 	
@@ -177,7 +175,7 @@ public class npr {
 	}
 
 	// Previously provided sample code
-	public static void Brighten(BufferedImage src, BufferedImage dst, float brightness) {
+	public static BufferedImage Brighten(BufferedImage src, BufferedImage dst, float brightness) {
 
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -201,10 +199,11 @@ public class npr {
 		}
 
 		dst.setRGB(0, 0, width, height, pixels, 0, width);
+		return dst;
 
 	}
 
-	public static void AdjustContrast(BufferedImage src, BufferedImage dst, float contrast) {
+	public static BufferedImage AdjustContrast(BufferedImage src, BufferedImage dst, float contrast) {
 		
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -224,11 +223,12 @@ public class npr {
 			pixels[i] = new Color(r, g, b, a).getRGB();
 		}
 		dst.setRGB(0, 0, width, height, pixels, 0, width);
+		return dst;
 	}
 
 	// saturation = 0 gives a gray scale version of the image
 	// saturation = 1 gives the original image
-	public static void AdjustSaturation(BufferedImage src, BufferedImage dst, float saturation) {
+	public static BufferedImage AdjustSaturation(BufferedImage src, BufferedImage dst, float saturation) {
 
 		float L;
 		int width = src.getWidth();
@@ -251,32 +251,36 @@ public class npr {
 			pixels[i] = new Color(r, g, b, a).getRGB();
 		}
 		dst.setRGB(0, 0, width, height, pixels, 0, width);
+		return dst;
 	}
 		
-	public static void Blur(BufferedImage src, BufferedImage dst, float radius) {
+	public static BufferedImage Blur(BufferedImage src, BufferedImage dst, float radius) {
 
 		GaussianFilter filter = new GaussianFilter();
 		filter.setRadius(radius);
 		filter.filter(src, dst);
+		return dst;
 	}
 
-	public static void Sharpen(BufferedImage src, BufferedImage dst, float sharpness) {
+	public static BufferedImage Sharpen(BufferedImage src, BufferedImage dst, float sharpness) {
 
 		float[] sharpenMatrix = {0, -sharpness, 0, - sharpness, 1+(4*sharpness), -sharpness, 0, - sharpness, 0};
 		ConvolveFilter filter = new ConvolveFilter(3, 3, sharpenMatrix);
 		filter.filter(src, dst);
+		return dst;
 		
 	}
 
-	public static void EdgeDetect(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage EdgeDetect(BufferedImage src, BufferedImage dst) {
 
 		EdgeFilter filter = new EdgeFilter();
 		filter.filter(src, dst);
+		return dst;
 	}
 
 	// compare each image pixel against a random threshold to quantize it to 0 or 1
 	// ignoring the color, and just use the luminance of a pixel to do the dithering
-	public static void RandomDither(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage RandomDither(BufferedImage src, BufferedImage dst) {
 		
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -295,13 +299,14 @@ public class npr {
 					dst.setRGB(i, j, 0);
 				}
 			}		
-		} 
+		}
+		return dst; 
 		
 	}
 
 	// compare each image pixel against a pseudo-random threshold to quantize it to 0 or 1
 	// in this case, the pseudo random number is given by a 4x4 Bayers matrix
-	public static void OrderedDither(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage OrderedDither(BufferedImage src, BufferedImage dst) {
 		
 		final float[][] Bayers = {{15/16.f,  7/16.f,  13/16.f,   5/16.f},
 								  {3/16.f,  11/16.f,   1/16.f,   9/16.f},
@@ -324,33 +329,37 @@ public class npr {
 					dst.setRGB(i, j, 0);
 				}
 			}		
-		} 		
+		}
+		return dst; 		
 
 	}
 	
-	public static void Crystallize(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage Crystallize(BufferedImage src, BufferedImage dst) {
 		
 		CrystallizeFilter filter = new CrystallizeFilter();
 		filter.filter(src, dst);
+		return dst;
 		
 	}
 	
 	
-	public static void Kaleidoscope(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage Kaleidoscope(BufferedImage src, BufferedImage dst) {
 		
 		KaleidoscopeFilter filter = new KaleidoscopeFilter();
 		filter.filter(src, dst);
+		return dst;
 		
 	}
 	
-	public static void Chrome(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage Chrome(BufferedImage src, BufferedImage dst) {
 		
 		ChromeFilter filter = new ChromeFilter();
 		filter.filter(src, dst);
+		return dst;
 		
 	}
 	
-	public static void abstractImpressionist(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage abstractImpressionist(BufferedImage src, BufferedImage dst) {
 		
 		final int[][] emboss = {
 					{-1,  -1,  -1,  -1,  0},
@@ -411,12 +420,12 @@ public class npr {
 				
 	    oilPaint(tmp, tmp2);
 	    AdjustSaturation(tmp2, dst, 2.0f);
-	    
+	    return dst;
 	}	
 		
 	
 
-	public static void Motion(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage Motion(BufferedImage src, BufferedImage dst) {
 	
 		int[][] filter =
 			{
@@ -477,10 +486,11 @@ public class npr {
 	    		dst.setRGB(i, j, result[i][j]);
 	    	}
 	    }
+		return dst;
 	    
 	}
 	
-	public static void Modern(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage Modern(BufferedImage src, BufferedImage dst) {
 		
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -491,7 +501,7 @@ public class npr {
 		BufferedImage tmp2 = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		tmp1.setRGB(0, 0, width, height, pixels, 0, width);
 		Motion(tmp1, tmp2);
-		oilPaint(tmp2, dst);
+		return oilPaint(tmp2, dst);
 		
 	}
 	
@@ -531,7 +541,7 @@ public class npr {
 
     }
 	
-	/*public static void something(BufferedImage src, BufferedImage dst) {
+	/*public static BufferedImage something(BufferedImage src, BufferedImage dst) {
 		
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -580,7 +590,7 @@ public class npr {
 		
 	//}
 	
-	public static void oilPaint(BufferedImage src, BufferedImage dst) {
+	public static BufferedImage oilPaint(BufferedImage src, BufferedImage dst) {
 		
 		/* 
 		 * How this algorithm works:
@@ -675,6 +685,7 @@ public class npr {
 				} 
 			}
 		}
+		return dst;
 			
 	}
 	
