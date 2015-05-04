@@ -28,13 +28,24 @@ public class npr {
 		String outputfilename = "output.png";	
 		newargs = args;
 		
+<<<<<<< HEAD
 		while (i < args.length) {
+=======
+		if (args.length < 2) {
+			printUsage();
+		}
+		
+		while (i < args.length && args[i].startsWith("-")) {
+>>>>>>> origin/master
 			arg = args[i++];
 
 			if (arg.equals("-input")) {
 
 				String inputfile = args[i++];
+<<<<<<< HEAD
 				System.out.println(inputfile);
+=======
+>>>>>>> origin/master
 				try {
 					src = ImageIO.read(new File(inputfile));
 				} catch (IOException e) {
@@ -43,10 +54,16 @@ public class npr {
 				width = src.getWidth();
 				height = src.getHeight();
 				dst = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+<<<<<<< HEAD
 				//continue;
 			}
 				/*
 				} else if (arg.equals("-output")) {
+=======
+				continue;
+
+			} else if (arg.equals("-output")) {
+>>>>>>> origin/master
 
 				outputfilename = args[++i];
 				System.out.println("Output file: " + outputfilename);
@@ -114,6 +131,7 @@ public class npr {
 				Kaleidoscope(src, dst);
 			
 			} else if (arg.equals("-chrome")) {
+<<<<<<< HEAD
 
 				System.out.println("Generating chrome");
 				Chrome(src, dst);
@@ -130,6 +148,24 @@ public class npr {
 			
 			}  else if (arg.equals("-paint")) {
 
+=======
+
+				System.out.println("Generating chrome");
+				Chrome(src, dst);
+			
+			} else if (arg.equals("-emboss")) {
+
+				System.out.println("Emboss");
+				Emboss(src, dst);
+			
+			} else if (arg.equals("-motion")) {
+
+				System.out.println("Motion");
+				Motion(src, dst);
+			
+			}  else if (arg.equals("-paint")) {
+
+>>>>>>> origin/master
 				System.out.println("Converting into Oil Painting");
 				oilPaint(src, dst);
 			
@@ -138,17 +174,26 @@ public class npr {
 				System.out.println("Modernizing");
 				Modern(src, dst); 
 			
+<<<<<<< HEAD
 			} /*else if (arg.equals("-something")) {
+=======
+			} else if (arg.equals("-something")) {
+>>>>>>> origin/master
 
 				System.out.println("Doing something");
 				something(src, dst); 
 			
 			} else {
 				printUsage();
+<<<<<<< HEAD
 			} */
 			new UserInterfaceClass(src, dst);
+=======
+			} 
+			//new UserInterfaceClass(src, dst);
+>>>>>>> origin/master
 			tmp = src; src = dst; dst = tmp;
-		//}
+		}
 		if (i != args.length) {
 			System.out.println("there are unused arguments");
 		}
@@ -159,7 +204,10 @@ public class npr {
 			ImageIO.write(src, "png", outfile);
 		} catch(IOException e) {
 		}
+<<<<<<< HEAD
 		}
+=======
+>>>>>>> origin/master
 	}
 	
 	public static void saveToDisk(BufferedImage src)
@@ -175,7 +223,11 @@ public class npr {
 	}
 
 	// Previously provided sample code
+<<<<<<< HEAD
 	public static BufferedImage Brighten(BufferedImage src, BufferedImage dst, float brightness) {
+=======
+	public static void Brighten(BufferedImage src, BufferedImage dst, float brightness) {
+>>>>>>> origin/master
 
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -199,11 +251,14 @@ public class npr {
 		}
 
 		dst.setRGB(0, 0, width, height, pixels, 0, width);
-		return dst;
 
 	}
 
+<<<<<<< HEAD
 	public static BufferedImage AdjustContrast(BufferedImage src, BufferedImage dst, float contrast) {
+=======
+	public static void AdjustContrast(BufferedImage src, BufferedImage dst, float contrast) {
+>>>>>>> origin/master
 		
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -223,12 +278,11 @@ public class npr {
 			pixels[i] = new Color(r, g, b, a).getRGB();
 		}
 		dst.setRGB(0, 0, width, height, pixels, 0, width);
-		return dst;
 	}
 
 	// saturation = 0 gives a gray scale version of the image
 	// saturation = 1 gives the original image
-	public static BufferedImage AdjustSaturation(BufferedImage src, BufferedImage dst, float saturation) {
+	public static void AdjustSaturation(BufferedImage src, BufferedImage dst, float saturation) {
 
 		float L;
 		int width = src.getWidth();
@@ -251,36 +305,48 @@ public class npr {
 			pixels[i] = new Color(r, g, b, a).getRGB();
 		}
 		dst.setRGB(0, 0, width, height, pixels, 0, width);
-		return dst;
 	}
 		
+<<<<<<< HEAD
 	public static BufferedImage Blur(BufferedImage src, BufferedImage dst, float radius) {
+=======
+	public static void Blur(BufferedImage src, BufferedImage dst, float radius) {
+>>>>>>> origin/master
 
 		GaussianFilter filter = new GaussianFilter();
 		filter.setRadius(radius);
 		filter.filter(src, dst);
-		return dst;
 	}
 
+<<<<<<< HEAD
 	public static BufferedImage Sharpen(BufferedImage src, BufferedImage dst, float sharpness) {
+=======
+	public static void Sharpen(BufferedImage src, BufferedImage dst, float sharpness) {
+>>>>>>> origin/master
 
 		float[] sharpenMatrix = {0, -sharpness, 0, - sharpness, 1+(4*sharpness), -sharpness, 0, - sharpness, 0};
 		ConvolveFilter filter = new ConvolveFilter(3, 3, sharpenMatrix);
 		filter.filter(src, dst);
-		return dst;
 		
 	}
 
+<<<<<<< HEAD
 	public static BufferedImage EdgeDetect(BufferedImage src, BufferedImage dst) {
+=======
+	public static void EdgeDetect(BufferedImage src, BufferedImage dst) {
+>>>>>>> origin/master
 
 		EdgeFilter filter = new EdgeFilter();
 		filter.filter(src, dst);
-		return dst;
 	}
 
 	// compare each image pixel against a random threshold to quantize it to 0 or 1
 	// ignoring the color, and just use the luminance of a pixel to do the dithering
+<<<<<<< HEAD
 	public static BufferedImage RandomDither(BufferedImage src, BufferedImage dst) {
+=======
+	public static void RandomDither(BufferedImage src, BufferedImage dst) {
+>>>>>>> origin/master
 		
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -299,14 +365,17 @@ public class npr {
 					dst.setRGB(i, j, 0);
 				}
 			}		
-		}
-		return dst; 
+		} 
 		
 	}
 
 	// compare each image pixel against a pseudo-random threshold to quantize it to 0 or 1
 	// in this case, the pseudo random number is given by a 4x4 Bayers matrix
+<<<<<<< HEAD
 	public static BufferedImage OrderedDither(BufferedImage src, BufferedImage dst) {
+=======
+	public static void OrderedDither(BufferedImage src, BufferedImage dst) {
+>>>>>>> origin/master
 		
 		final float[][] Bayers = {{15/16.f,  7/16.f,  13/16.f,   5/16.f},
 								  {3/16.f,  11/16.f,   1/16.f,   9/16.f},
@@ -329,28 +398,38 @@ public class npr {
 					dst.setRGB(i, j, 0);
 				}
 			}		
-		}
-		return dst; 		
+		} 		
 
 	}
 	
+<<<<<<< HEAD
 	public static BufferedImage Crystallize(BufferedImage src, BufferedImage dst) {
 		
 		CrystallizeFilter filter = new CrystallizeFilter();
 		filter.filter(src, dst);
 		return dst;
+=======
+	public static void Crystallize(BufferedImage src, BufferedImage dst) {
+		
+		CrystallizeFilter filter = new CrystallizeFilter();
+		filter.filter(src, dst);
+>>>>>>> origin/master
 		
 	}
 	
 	
+<<<<<<< HEAD
 	public static BufferedImage Kaleidoscope(BufferedImage src, BufferedImage dst) {
+=======
+	public static void Kaleidoscope(BufferedImage src, BufferedImage dst) {
+>>>>>>> origin/master
 		
 		KaleidoscopeFilter filter = new KaleidoscopeFilter();
 		filter.filter(src, dst);
-		return dst;
 		
 	}
 	
+<<<<<<< HEAD
 	public static BufferedImage Chrome(BufferedImage src, BufferedImage dst) {
 		
 		ChromeFilter filter = new ChromeFilter();
@@ -360,6 +439,16 @@ public class npr {
 	}
 	
 	public static BufferedImage abstractImpressionist(BufferedImage src, BufferedImage dst) {
+=======
+	public static void Chrome(BufferedImage src, BufferedImage dst) {
+		
+		ChromeFilter filter = new ChromeFilter();
+		filter.filter(src, dst);
+		
+	}
+	
+	public static void Emboss(BufferedImage src, BufferedImage dst) {
+>>>>>>> origin/master
 		
 		final int[][] emboss = {
 					{-1,  -1,  -1,  -1,  0},
@@ -370,6 +459,7 @@ public class npr {
 				};
 		int width = src.getWidth();
 		int height = src.getHeight();
+<<<<<<< HEAD
 		BufferedImage tmp = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		BufferedImage tmp2 = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
@@ -441,10 +531,13 @@ public class npr {
 			};
 		int width = src.getWidth();
 		int height = src.getHeight();
+=======
+>>>>>>> origin/master
 	
 	
 		int[] pixels = new int[width*height];
 		src.getRGB(0, 0, width, height, pixels, 0, width);
+<<<<<<< HEAD
 		
 		int[][] image = new int[width][height];
 		int[][] result = new int[width][height];
@@ -502,9 +595,120 @@ public class npr {
 		tmp1.setRGB(0, 0, width, height, pixels, 0, width);
 		Motion(tmp1, tmp2);
 		return oilPaint(tmp2, dst);
+=======
+>>>>>>> origin/master
 		
+		int[][] image = new int[width][height];
+		int[][] result = new int[width][height];
+		       
+		int counter = 0;
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				image[i][j] = pixels[counter];
+				counter++;
+			}
+		}
+	
+		int e = 128;
+		int r, g, b;
+		     
+	    for(int x = 0; x < width; x++) {
+	    	for(int y = 0; y < height; y++) {
+	    
+	    		float red = 0.0f, green = 0.0f, blue = 0.0f; 
+	    		for (int filterX = 0; filterX < 5; filterX++) {
+	    			for(int filterY = 0; filterY < 5; filterY++) {
+	    				int imageX = (x - 9 / 2 + filterX + width) % width; 
+	    	            int imageY = (y - 9 / 2 + filterY + height) % height; 
+	    	            Color c = new Color(src.getRGB(imageX, imageY));
+	    	            red += c.getRed() * emboss[filterX][filterY]; 
+	    	            green += c.getGreen() * emboss[filterX][filterY]; 
+	    	            blue += c.getBlue() * emboss[filterX][filterY]; 
+	    			}
+	    		}
+		        r = Math.min(Math.max((int)(red + e), 0), 255); 
+		        g = Math.min(Math.max((int)(green + e), 0), 255); 
+		        b = Math.min(Math.max((int)(blue + e), 0), 255);
+		        result[x][y] = new Color(r, g, b, 255).getRGB();
+	    	}  
+    
+	    }
+	    
+	    for (int i = 0; i < result.length; i++) {
+	    	for (int j = 0; j < result[0].length; j++) {
+	    		dst.setRGB(i, j, result[i][j]);
+	    	}
+	    }
+				
+	}	
+		
+	
+
+	public static void Motion(BufferedImage src, BufferedImage dst) {
+	
+		int[][] filter =
+			{
+			    {1, 0, 0, 0, 0, 0, 0, 0, 0},
+			    {0, 1, 0, 0, 0, 0, 0, 0, 0},
+			    {0, 0, 1, 0, 0, 0, 0, 0, 0},
+			    {0, 0, 0, 1, 0, 0, 0, 0, 0},
+			    {0, 0, 0, 0, 1, 0, 0, 0, 0},
+			    {0, 0, 0, 0, 0, 1, 0, 0, 0},
+			    {0, 0, 0, 0, 0, 0, 1, 0, 0},
+			    {0, 0, 0, 0, 0, 0, 0, 1, 0},
+			    {0, 0, 0, 0, 0, 0, 0, 0, 1}
+			};
+		int width = src.getWidth();
+		int height = src.getHeight();
+	
+	
+		int[] pixels = new int[width*height];
+		src.getRGB(0, 0, width, height, pixels, 0, width);
+		
+		int[][] image = new int[width][height];
+		int[][] result = new int[width][height];
+		       
+		int counter = 0;
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				image[i][j] = pixels[counter];
+				counter++;
+			}
+		}
+	
+		float f = 1.0f / 10.0f; 
+		int r, g, b;
+		     
+	    for(int x = 0; x < width; x++) {
+	    	for(int y = 0; y < height; y++) {
+	    		float red = 0.0f, green = 0.0f, blue = 0.0f; 
+	    		for (int filterX = 0; filterX < 9; filterX++) {
+	    			for(int filterY = 0; filterY < 9; filterY++) {
+	    				int imageX = (x - 9 / 2 + filterX + width) % width; 
+	    	            int imageY = (y - 9 / 2 + filterY + height) % height; 
+	    	            Color c = new Color(src.getRGB(imageX, imageY));
+	    	            red += c.getRed() * filter[filterX][filterY]; 
+	    	            green += c.getGreen() * filter[filterX][filterY]; 
+	    	            blue += c.getBlue() * filter[filterX][filterY]; 
+	    			}
+	    		}
+		        r = Math.min(Math.max((int)(f * red), 0), 255); 
+		        g = Math.min(Math.max((int)(f * green), 0), 255); 
+		        b = Math.min(Math.max((int)(f * blue), 0), 255);
+		        result[x][y] = new Color(r, g, b, 255).getRGB();
+	    	}  
+    
+	    }
+	    
+	    for (int i = 0; i < result.length; i++) {
+	    	for (int j = 0; j < result[0].length; j++) {
+	    		dst.setRGB(i, j, result[i][j]);
+	    	}
+	    }
+	    
 	}
 	
+<<<<<<< HEAD
 	public static void quickSort(int[] unsorted, int lowIndex, int highIndex) {
 	    
         int low = lowIndex;
@@ -552,6 +756,20 @@ public class npr {
 		nh = 256/nh;
 		int[] pixels = new int[width*height];
 		src.getRGB(0, 0, width, height, pixels, 0, width);
+=======
+	public static void Modern(BufferedImage src, BufferedImage dst) {
+		
+		int width = src.getWidth();
+		int height = src.getHeight();
+		int[] pixels = new int[width*height];
+		src.getRGB(0, 0, width, height, pixels, 0, width);
+		quickSort(pixels, 0, pixels.length - 1);
+		BufferedImage tmp1 = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage tmp2 = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		tmp1.setRGB(0, 0, width, height, pixels, 0, width);
+		Motion(tmp1, tmp2);
+		oilPaint(tmp2, dst);
+>>>>>>> origin/master
 		
 		int[][] image = new int[rows][cols];		       
 		int[][] result = new int[rows][cols];
@@ -689,4 +907,193 @@ public class npr {
 			
 	}
 	
+<<<<<<< HEAD
 }
+=======
+	public static void quickSort(int[] unsorted, int lowIndex, int highIndex) {
+	    
+        int low = lowIndex;
+        int high = highIndex;
+        int pivot = (unsorted[low] + unsorted[high] + unsorted[(low + high)/2])/3;
+
+        while (low <= high) {
+            while (unsorted[low] < pivot) { 
+                low++;
+            } 
+            while (unsorted[high] > pivot) { 
+                high--;
+            } 
+            if (low <= high) {
+                swap(unsorted, low, high);
+                low++;
+                high--;
+            } 
+        }
+        if (lowIndex < high) {
+            quickSort(unsorted, lowIndex, high);
+        }
+        if (low < highIndex) {
+            quickSort(unsorted, low, highIndex);
+        }
+        
+    }
+	
+	public static void swap(int[] unsorted, int i, int j) {
+
+        int temp = unsorted[i];
+        unsorted[i] = unsorted[j];
+        unsorted[j] = temp;
+
+    }
+	
+	public static void something(BufferedImage src, BufferedImage dst) {
+		
+		int width = src.getWidth();
+		int height = src.getHeight();
+		int rows = width/5;
+		int cols = height/5;
+		int nh = 10; //number of halftones
+		int c = (int)(0.001 + Math.sqrt((double)nh));
+		nh = 256/nh;
+		int[] pixels = new int[width*height];
+		src.getRGB(0, 0, width, height, pixels, 0, width);
+		
+		int[][] image = new int[rows][cols];		       
+		int[][] result = new int[rows][cols];
+		int counter = 0;
+		/*for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				image[i][j] = pixels[counter];
+				counter++;
+			}
+		}*/
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				dst.setRGB(i, j, 0); //all white
+			}
+		}
+		int count = 0;
+		int black = new Color(0, 0, 0).getRGB(); 
+		for (int i = 0; i < rows-c+1; i+=c) {
+			for (int j = 0; j < cols-c+1; j+=c) {
+				count = src.getRGB(i, j);
+				for (int x = i; x < i+c && count!= 0; x++) {
+					for (int y = j; y < j+c && count != 0; y++) {
+						dst.setRGB(x, y, black);
+						count--;
+					}
+				}
+			}
+		}
+		
+		/*
+		int width = src.getWidth();
+		int height = src.getHeight();
+		BufferedImage tmp = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Crystallize(src, tmp);
+		oilPaint(tmp, dst);*/
+		
+	}
+	
+	public static void oilPaint(BufferedImage src, BufferedImage dst) {
+		
+		/* 
+		 * How this algorithm works:
+		 * each pixel is sorted into an intensity'bin' 
+		 * intensity usually defined by (r + b + g)/3, but we'll divide that by 20 to create a more blocky effect
+		 * therefore, by dividing by 20, each pixel has its intensity 'binned'
+		 * for each pixel, you examine the surrounding pixels, calculating their intensities
+		 * then determine which intensity bin has the highest number of pixels in it
+		 * And determine the final color based on that intensity
+		 * source: http://supercomputingblog.com/graphics/oil-painting-algorithm/
+		 * */
+		
+		int width = src.getWidth();
+		int height = src.getHeight();
+		int[] pixels = new int[width*height];
+		src.getRGB(0, 0, width, height, pixels, 0, width);
+		
+		int[][] image = new int[width][height];		       
+		int counter = 0;
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				image[i][j] = pixels[counter];
+				counter++;
+			}
+		} //now have a integer[][] that maps out the pixels in the image
+		
+		int curIntens; //keep track of the current intensity
+		int red, green, blue;
+		int finalR, finalG, finalB, k;
+		
+		for (int i = 0; i < width; i++) { //go through every pixel
+			for(int j = 0; j < height; j++) {
+				int[] intensCount = new int[21]; //count the number of sub-pixels in each intensity bin
+				int[] totR = new int[21]; //keep track of total color values for each bin
+				int[] totG = new int[21];
+				int[] totB = new int[21];
+				for (int a = -5; a <= 5; a++) { //go through every pixel within radius of 5
+					for (int b = -5; b <= 5; b++) {
+						Color c = new Color(src.getRGB(i, j));
+						if (i >= 5 && i < (width - 5) && j >= 5 && j < (height - 5)) {
+							c = new Color(src.getRGB(i + a, j + b));
+						} if (i >= 5 && i < (width - 5) && !(j >= 5 && j < (height - 5))) {
+							c = new Color(src.getRGB(i + a, j));
+						}if (!(i >= 5 && i < (width - 5)) && j >= 5 && j < (height - 5)) {
+							c = new Color(src.getRGB(i, j + b));
+						}
+						red = c.getRed(); 
+						green = c.getGreen();
+						blue = c.getBlue();
+						curIntens = ((red + green + blue)/3)*20/255; 
+						intensCount[curIntens]++;
+						totR[curIntens] += red;
+						totG[curIntens] += green;
+						totB[curIntens] += blue;
+					}
+				} 
+				int currentMax = 0;
+				int maxIndex = 0;
+				for (int m = 0; m < 20; m++) {
+					if (intensCount[m] > currentMax) {
+						currentMax = intensCount[m];
+						maxIndex = m;
+					}
+				}
+				if (currentMax != 0) {
+					finalR = totR[maxIndex] / currentMax;
+					if (finalR < 0) {
+						finalR = -1* finalR;
+					}
+					if (finalR > 255) {
+						finalR = 255;
+					}
+					finalG = totG[maxIndex] / currentMax;
+					if (finalG < 0) {
+						finalG = -1 * finalG;
+					}
+					if (finalG > 255) {
+						finalG = 255;
+					}
+					finalB = totB[maxIndex] / currentMax;
+					if (finalB < 0) {
+						finalB = -1 * finalB;
+					}
+					if (finalB > 255) {
+						finalB = 254;
+					} 
+					k = new Color(finalR, finalG, finalB, 255).getRGB();
+					dst.setRGB(i, j, k);
+				} else {
+					Color c = new Color(src.getRGB(i, j));
+					dst.setRGB(i, j, c.getRGB()); 
+				} 
+			}
+		}
+			
+	}
+	
+}
+
+	
+>>>>>>> origin/master
