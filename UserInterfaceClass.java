@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.image.*;
+import java.util.Stack;
 
 import javax.swing.*;
 
@@ -28,8 +29,8 @@ public class UserInterfaceClass {
 	private JButton odither = new JButton("Ordered Dither");
 	private JButton crystallize = new JButton("Crystallize");
 	private JButton kaleidoscope = new JButton("Kaleidoscope");
-	private JButton rays = new JButton("Rays");
-	private JButton sparkle = new JButton("Sparkle");
+	private JButton modern = new JButton("Modern");
+	private JButton oil = new JButton("Oil");
 	private JButton chrome = new JButton("Chrome");
 	private JButton fun = new JButton("Mystery");
 	private JButton notfun = new JButton("Reset");
@@ -42,6 +43,9 @@ public class UserInterfaceClass {
 	private JTextField saturationValue = new JTextField();
 	private JTextField blurValue = new JTextField();
 	private JTextField sharpenValue = new JTextField();
+	
+	//stack
+	Stack<BufferedImage> imageStack = new Stack<BufferedImage>();
 	
 	public UserInterfaceClass(final BufferedImage image, final BufferedImage destination)
 	{
@@ -91,6 +95,7 @@ public class UserInterfaceClass {
 					{
 						float value = Float.parseFloat(brightenValue.getText());
 						setNewImageIcon(npr.Brighten(image, destination, value));
+						imageStack.add(newImage);
 						updateImage();
 					}
 				});
@@ -108,6 +113,7 @@ public class UserInterfaceClass {
 					{
 						float value = Float.parseFloat(contrastValue.getText());
 						setNewImageIcon(npr.AdjustContrast(image, destination, value));
+						imageStack.add(newImage);
 						updateImage();
 					}
 				});
@@ -125,6 +131,7 @@ public class UserInterfaceClass {
 					{
 						float value = Float.parseFloat(saturationValue.getText());
 						setNewImageIcon(npr.AdjustSaturation(image, destination, value));
+						imageStack.add(newImage);
 						updateImage();
 					}
 				});
@@ -142,6 +149,7 @@ public class UserInterfaceClass {
 					{
 						float value = Float.parseFloat(blurValue.getText());
 						setNewImageIcon(npr.Blur(image, destination, value));
+						imageStack.add(newImage);
 						updateImage();
 					}
 				});
@@ -159,6 +167,7 @@ public class UserInterfaceClass {
 					{
 						float value = Float.parseFloat(sharpenValue.getText());
 						setNewImageIcon(npr.Sharpen(image, destination, value));
+						imageStack.add(newImage);
 						updateImage();
 					}
 				});
@@ -173,6 +182,7 @@ public class UserInterfaceClass {
 					public void actionPerformed(ActionEvent e)
 					{
 						setNewImageIcon(npr.EdgeDetect(image, destination));
+						imageStack.add(newImage);
 						updateImage();
 					}
 				});
@@ -185,6 +195,7 @@ public class UserInterfaceClass {
 					public void actionPerformed(ActionEvent e)
 					{
 						setNewImageIcon(npr.RandomDither(image, destination));
+						imageStack.add(newImage);
 						updateImage();
 					}
 				});
@@ -197,6 +208,7 @@ public class UserInterfaceClass {
 					public void actionPerformed(ActionEvent e)
 					{
 						setNewImageIcon(npr.RandomDither(image, destination));
+						imageStack.add(newImage);
 						updateImage();
 					}
 				});
@@ -209,6 +221,7 @@ public class UserInterfaceClass {
 					public void actionPerformed(ActionEvent e)
 					{
 						setNewImageIcon(npr.Crystallize(image, destination));
+						imageStack.add(newImage);
 						updateImage();
 					}
 				});
@@ -221,30 +234,35 @@ public class UserInterfaceClass {
 					public void actionPerformed(ActionEvent e)
 					{
 						setNewImageIcon(npr.Kaleidoscope(image, destination));
+						imageStack.add(newImage);
 						updateImage();
 					}
 				});
 
 				//rays
-				setButtonFeatures(rays);
-				rays.addActionListener(new ActionListener()
+				setButtonFeatures(modern);
+				modern.addActionListener(new ActionListener()
 				{
 					@Override
 					public void actionPerformed(ActionEvent e)
 					{
-						setNewImageIcon(npr.Rays(image, destination));
+						setNewImageIcon(npr.Modern(image, destination));
+						npr.saveToDisk(newImage);						
+						imageStack.add(newImage);
 						updateImage();
 					}
 				});
 				
 				//sparkle
-				setButtonFeatures(sparkle);
-				sparkle.addActionListener(new ActionListener()
+				setButtonFeatures(oil);
+				oil.addActionListener(new ActionListener()
 				{
 					@Override
 					public void actionPerformed(ActionEvent e)
 					{
-						setNewImageIcon(npr.Sparkle(image, destination));
+						setNewImageIcon(npr.oilPaint(image, destination));
+						npr.saveToDisk(newImage);
+						imageStack.add(newImage);
 						updateImage();
 					}
 				});
@@ -257,6 +275,7 @@ public class UserInterfaceClass {
 					public void actionPerformed(ActionEvent e)
 					{
 						setNewImageIcon(npr.Chrome(image, destination));
+						imageStack.add(newImage);
 						updateImage();
 					}
 				});
@@ -271,10 +290,20 @@ public class UserInterfaceClass {
 					}
 				});
 
+				setButtonFeatures(goback);
+				goback.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						imageStack.pop();
+						updateImage();
+					}
+				});
+
 				//non image processes
 				setButtonFeatures(empty);
 				empty.setBorderPainted(false);
-				setButtonFeatures(goback);
 				
 				//add buttons to button panel
 				bPanel.add(brightenPane);
@@ -286,8 +315,8 @@ public class UserInterfaceClass {
 				bPanel.add(odither);
 				bPanel.add(crystallize);
 				bPanel.add(kaleidoscope);
-				bPanel.add(rays);
-				bPanel.add(sparkle);
+				bPanel.add(modern);
+				bPanel.add(oil);
 				bPanel.add(chrome);
 				bPanel.add(fun);
 				bPanel.add(empty);
@@ -371,13 +400,16 @@ public class UserInterfaceClass {
 	
 	public ImageIcon getImageIcon()
 	{
-		Image tmp = imageToResize(newImage, style);
+		Image tmp = imageToResize(imageStack.peek(), style);
 		ImageIcon tm = new ImageIcon(tmp);
 		return tm;
 	}
 
 	public void setNewImageIcon(BufferedImage image) {
-		newImage = image;
+		if(imageStack.isEmpty())
+			newImage = image;
+		else
+			imageStack.add(image);
 	}
 	
 	public Image imageToResize(BufferedImage image, int style)
