@@ -20,6 +20,7 @@ public class UserInterfaceClass {
 	private JPanel bPanel = new JPanel(new GridLayout(25, 2));
 	//buttons
 	private JButton brighten = new JButton("Brightness");
+	private JButton abstrac = new JButton("Abstract Impressionist");
 	private JButton contrast = new JButton("Contrast");
 	private JButton saturation = new JButton("Saturation");
 	private JButton blur = new JButton("Blur");
@@ -280,6 +281,19 @@ public class UserInterfaceClass {
 					}
 				});
 
+				//abstract
+				setButtonFeatures(abstrac);
+				abstrac.addActionListener(new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						setNewImageIcon(npr.abstractImpressionist(image, destination));
+						imageStack.add(newImage);
+						updateImage();
+					}
+				});
+
 				setButtonFeatures(save);
 				save.addActionListener(new ActionListener()
 				{
@@ -317,6 +331,7 @@ public class UserInterfaceClass {
 				bPanel.add(kaleidoscope);
 				bPanel.add(modern);
 				bPanel.add(oil);
+				bPanel.add(abstrac);
 				bPanel.add(chrome);
 				bPanel.add(fun);
 				bPanel.add(empty);
